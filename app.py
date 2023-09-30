@@ -16,6 +16,7 @@ def index():
 #route that handles video upload
 @app.route('/upload', methods=['POST'])
 def upload_video():
+    os.mkdir(os.path.join(app.root_path, 'video_uploads'))
     if not  request.files:
         return "No file part"
     
@@ -26,6 +27,7 @@ def upload_video():
     if video_file:
         filename = secure_filename(video_file.filename)
         video_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
         # Return a redirect response to the play_video route with the filename
         return redirect(url_for('play_video', filename=filename))
     
