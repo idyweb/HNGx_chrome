@@ -8,7 +8,7 @@ import json
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://chrome-extension-3dyu.onrender.com/"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Folder to store uploaded videos
 UPLOAD_FOLDER = 'video_uploads'
