@@ -1,6 +1,6 @@
 import os
 from werkzeug.utils import secure_filename
-from flask import Flask, request, redirect, render_template, send_from_directory, url_for
+from flask import Flask, request, redirect, render_template, send_from_directory, url_for, jsonify
 import whisper
 import datetime
 import uuid 
@@ -13,6 +13,9 @@ CORS(app, resources={r"/*": {"origins": "https://chrome-extension-3dyu.onrender.
 # Folder to store uploaded videos
 UPLOAD_FOLDER = 'video_uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+#  directory exists for render
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Home route
 @app.route('/')
@@ -78,6 +81,9 @@ def uploaded_file(filename):
     # Serve the file from the UPLOAD_FOLDER
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+@app.errorhandler(Exception)
+def handle_error(e):
+    return jsonify(error=str(e)), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
-
